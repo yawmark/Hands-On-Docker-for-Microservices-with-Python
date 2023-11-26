@@ -24,7 +24,6 @@ def generate_token_header(username, private_key):
         'exp': datetime.utcnow() + timedelta(days=2),
     }
     token = encode_token(payload, private_key)
-    # token = token.decode('utf8')
     return f'Bearer {token}'
 
 
