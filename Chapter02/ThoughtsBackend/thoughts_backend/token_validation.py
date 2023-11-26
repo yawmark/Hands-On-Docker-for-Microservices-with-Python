@@ -11,7 +11,7 @@ def encode_token(payload, private_key):
 
 
 def decode_token(token, public_key):
-    return jwt.decode(token, public_key, algoritms='RS256')
+    return jwt.decode(token, public_key, algorithms=['RS256'])
 
 
 def generate_token_header(username, private_key):
@@ -24,7 +24,7 @@ def generate_token_header(username, private_key):
         'exp': datetime.utcnow() + timedelta(days=2),
     }
     token = encode_token(payload, private_key)
-    token = token.decode('utf8')
+    # token = token.decode('utf8')
     return f'Bearer {token}'
 
 
@@ -47,7 +47,7 @@ def validate_token_header(header, public_key):
     token = parse_result[0]
     try:
         decoded_token = decode_token(token.encode('utf8'), public_key)
-    except jwt.exceptions.DecodeError:
+    except jwt.exceptions.DecodeError as e:
         logger.warning(f'Error decoding header "{header}". '
                        'This may be key missmatch or wrong key')
         return None
